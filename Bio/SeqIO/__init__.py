@@ -238,6 +238,7 @@ import PirIO
 import SwissIO
 import TabIO
 import QualityIO #FastQ and qual files
+import SffIO
 
 
 #Convention for format names is "mainname-subtype" in lower case.
@@ -265,6 +266,7 @@ _FormatToIterator ={"fasta" : FastaIO.FastaIterator,
                     "fastq-solexa" : QualityIO.FastqSolexaIterator,
                     "fastq-illumina" : QualityIO.FastqIlluminaIterator,
                     "qual" : QualityIO.QualPhredIterator,
+                    "sff": SffIO.SffIterator,
                     }
 
 _FormatToWriter ={"fasta" : FastaIO.FastaWriter,
