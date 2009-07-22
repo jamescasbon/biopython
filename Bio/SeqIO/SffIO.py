@@ -1,4 +1,4 @@
-# Copyright 2008 by James Casbon.  All rights reserved.
+# Copyright 2009 by James Casbon.  All rights reserved.
 # This code is part of the Biopython distribution and governed by its
 # license.  Please see the LICENSE file that should have been included
 # as part of this package.
@@ -7,6 +7,24 @@
 
 You are expected to use this module via the Bio.SeqIO functions.
 
+This implements the SFF file format as described in the "Genome Sequencer 
+Data Analysis Software Manual Software Version 2.0.00, October 2008"" pages 528-531.
+
+The file is split into three sections: 
+
+1. Common Header
+2. Reads sections which has pairs of:
+    Read Header
+    Read Data
+3. Index
+
+This parser implements the first two sections. 
+
+Note the 454 analysis software will output fna and qual files which can be read by the QualityIO 
+package.  This may be useful to you if:
+ * you want to process an sff file on a system without the Roche software
+ * you want to access the untrimmed sequences 
+ * you want to look at the actual flow data
 """
 
 import struct
