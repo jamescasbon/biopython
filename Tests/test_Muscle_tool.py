@@ -5,6 +5,7 @@
 
 import os
 import sys
+import subprocess
 import unittest
 
 from Bio.Application import generic_run
@@ -77,14 +78,14 @@ class MuscleApplication(unittest.TestCase):
         cmdline = MuscleCommandline(muscle_exe,
                                     input=self.infile1,
                                     out=self.outfile1)
-        self.assertEqual(str(cmdline), muscle_exe + " -in Fasta/f002 -out " + \
-                         "Fasta/temp_align_out1.fa ")
+        self.assertEqual(str(cmdline), muscle_exe \
+                         + " -in Fasta/f002 -out Fasta/temp_align_out1.fa")
         self.assertEqual(str(eval(repr(cmdline))), str(cmdline))
-        stdin, stdout, stderr = generic_run(cmdline)
-        self.assertEqual(stdin.return_code, 0)
+        result, stdout, stderr = generic_run(cmdline)
+        self.assertEqual(result.return_code, 0)
         self.assertEqual(stdout.read(), "")
         self.assert_("ERROR" not in stderr.read())
-        self.assertEqual(str(stdin._cl), str(cmdline))
+        self.assertEqual(str(result._cl), str(cmdline))
 
     def test_Muscle_with_options(self):
         """Round-trip through app with a switch and valued option."""
@@ -95,14 +96,15 @@ class MuscleApplication(unittest.TestCase):
         cmdline.objscore = "sp"
         cmdline.noanchors = True
         self.assertEqual(str(cmdline), muscle_exe +\
-                         " -in Fasta/f002 -out " + \
-                        "Fasta/temp_align_out2.fa -objscore sp -noanchors ")
+                         " -in Fasta/f002" + \
+                         " -out Fasta/temp_align_out2.fa" + \
+                         " -objscore sp -noanchors")
         self.assertEqual(str(eval(repr(cmdline))), str(cmdline))
-        stdin, stdout, stderr = generic_run(cmdline)
-        self.assertEqual(stdin.return_code, 0)
+        result, stdout, stderr = generic_run(cmdline)
+        self.assertEqual(result.return_code, 0)
         self.assertEqual(stdout.read(), "")
         self.assert_("ERROR" not in stderr.read())
-        self.assertEqual(str(stdin._cl), str(cmdline))
+        self.assertEqual(str(result._cl), str(cmdline))
 
     def test_Muscle_profile_simple(self):
         """Simple round-trip through app doing a profile alignment."""
@@ -112,14 +114,14 @@ class MuscleApplication(unittest.TestCase):
         cmdline.set_parameter("in1", self.infile2)
         cmdline.set_parameter("in2", self.infile3)
         self.assertEqual(str(cmdline), muscle_exe + \
-                         " -out Fasta/temp_align_out3.fa " + \
-                         "-profile -in1 Fasta/fa01 -in2 Fasta/f001 ")
+                         " -out Fasta/temp_align_out3.fa" + \
+                         " -profile -in1 Fasta/fa01 -in2 Fasta/f001")
         self.assertEqual(str(eval(repr(cmdline))), str(cmdline))
-        stdin, stdout, stderr = generic_run(cmdline)
-        self.assertEqual(stdin.return_code, 0)
+        result, stdout, stderr = generic_run(cmdline)
+        self.assertEqual(result.return_code, 0)
         self.assertEqual(stdout.read(), "")
         self.assert_("ERROR" not in stderr.read())
-        self.assertEqual(str(stdin._cl), str(cmdline))
+        self.assertEqual(str(result._cl), str(cmdline))
 
     def test_Muscle_profile_with_options(self):
         """Profile alignment, and switch and valued options. """
@@ -129,18 +131,18 @@ class MuscleApplication(unittest.TestCase):
                                     profile=True, stable=True,
                                     cluster1="neighborjoining")
         self.assertEqual(str(cmdline), muscle_exe + \
-                         " -out Fasta/temp_align_out4.fa " + \
-                         "-profile -in1 Fasta/fa01 -in2 Fasta/f001 -cluster1 " + \
-                         "neighborjoining -stable ")
+                         " -out Fasta/temp_align_out4.fa" + \
+                         " -profile -in1 Fasta/fa01 -in2 Fasta/f001" + \
+                         " -cluster1 neighborjoining -stable")
         self.assertEqual(str(eval(repr(cmdline))), str(cmdline))
         """
         #TODO - Why doesn't this work with MUSCLE 3.6 on the Mac?
         #It may be another bug fixed in MUSCLE 3.7 ...
-        stdin, stdout, stderr = generic_run(cmdline)
-        self.assertEqual(stdin.return_code, 0)
+        result, stdout, stderr = generic_run(cmdline)
+        self.assertEqual(result.return_code, 0)
         self.assertEqual(stdout.read(), "")
         self.assert_("ERROR" not in stderr.read())
-        self.assertEqual(str(stdin._cl), str(cmdline))
+        self.assertEqual(str(result._cl), str(cmdline))
         """
 
 class SimpleAlignTest(unittest.TestCase) :
@@ -159,7 +161,6 @@ class SimpleAlignTest(unittest.TestCase) :
         cmdline.set_parameter("stable")
         #Set some others options just to test them
         cmdline.set_parameter("maxiters", 2)
-        #TODO - Fix the trailing space!
         self.assertEqual(str(cmdline).rstrip(), "muscle -in Fasta/f002 -maxiters 2 -stable")
         result, out_handle, err_handle = generic_run(cmdline)
         print err_handle.read()
@@ -179,7 +180,6 @@ class SimpleAlignTest(unittest.TestCase) :
         #Prepare the command... use Clustal output (with a MUSCLE header)
         cmdline = MuscleCommandline(muscle_exe, input=input_file,
                                     stable=True, clw = True)
-        #TODO - Fix the trailing space!
         self.assertEqual(str(cmdline).rstrip(), muscle_exe + \
                          " -in Fasta/f002 -clw -stable")
         self.assertEqual(str(eval(repr(cmdline))), str(cmdline))
@@ -204,7 +204,6 @@ class SimpleAlignTest(unittest.TestCase) :
         cmdline.set_parameter("stable", True) #Default None treated as False!
         #Use clustal output (with a CLUSTAL header)
         cmdline.set_parameter("clwstrict", True) #Default None treated as False!
-        #TODO - Fix the trailing space!
         self.assertEqual(str(cmdline).rstrip(), muscle_exe + \
                          " -in Fasta/f002 -clwstrict -stable")
         self.assertEqual(str(eval(repr(cmdline))), str(cmdline))
@@ -239,7 +238,6 @@ class SimpleAlignTest(unittest.TestCase) :
         cmdline.set_parameter("maxhours", 0.1)
         #No progress reports to stderr
         cmdline.set_parameter("quiet", True) #Default None treated as False!
-        #TODO - Fix the trailing space!
         self.assertEqual(str(cmdline).rstrip(), muscle_exe + \
                          " -in temp_cw_prot.fasta -diags -maxhours 0.1" + \
                          " -maxiters 1 -clwstrict -stable -quiet")
@@ -253,6 +251,31 @@ class SimpleAlignTest(unittest.TestCase) :
         os.remove(temp_large_fasta_file)
         #See if quiet worked:
         self.assertEqual("", err_handle.read().strip())
+
+    def test_using_stdin(self):
+        """Simple alignment using stdin"""
+        input_file = "Fasta/f002"
+        self.assert_(os.path.isfile(input_file))
+        records = list(SeqIO.parse(open(input_file),"fasta"))
+        #Prepare the command... use Clustal output (with a MUSCLE header)
+        cline = MuscleCommandline(muscle_exe, clw=True, stable=True)
+        self.assertEqual(str(cline).rstrip(), muscle_exe + " -clw -stable")
+        self.assertEqual(str(eval(repr(cline))), str(cline))
+        child = subprocess.Popen(str(cline),
+                                 stdin=subprocess.PIPE,
+                                 stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE,
+                                 shell=(sys.platform!="win32"))
+        SeqIO.write(records, child.stdin, "fasta")
+        child.stdin.close()
+        #Alignment will now run...
+        align = AlignIO.read(child.stdout, "clustal")
+        self.assertEqual(len(records),len(align))
+        for old, new in zip(records, align) :
+            self.assertEqual(old.id, new.id)
+            self.assertEqual(str(new.seq).replace("-",""), str(old.seq))
+        self.assertEqual(0, child.wait())
+        del child
 
 if __name__ == "__main__":
     runner = unittest.TextTestRunner(verbosity = 2)

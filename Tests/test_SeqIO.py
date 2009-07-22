@@ -18,17 +18,17 @@ rna_alphas = [Alphabet.generic_rna]
 nucleotide_alphas = [Alphabet.generic_nucleotide,
                      Alphabet.Gapped(Alphabet.generic_nucleotide)]
 no_alpha_formats = ["fasta","clustal","phylip","tab","ig","stockholm","emboss",
-                    "fastq","fastq-solexa","qual"]
+                    "fastq","fastq-solexa","fastq-illumina","qual"]
 possible_unknown_seq_formats = ["qual", "genbank", "gb", "embl"]
 
 #List of formats including alignment only file formats we can read AND write.
 #The list is initially hard coded to preserve the original order of the unit
 #test output, with any new formats added since appended to the end.
 test_write_read_alignment_formats = ["fasta","clustal","phylip","stockholm"]
-for format in SeqIO._FormatToWriter :
+for format in sorted(SeqIO._FormatToWriter) :
     if format not in test_write_read_alignment_formats :
         test_write_read_alignment_formats.append(format)
-for format in AlignIO._FormatToWriter :
+for format in sorted(AlignIO._FormatToWriter) :
     if format not in test_write_read_alignment_formats :
         test_write_read_alignment_formats.append(format)
 test_write_read_alignment_formats.remove("gb") #an alias for genbank
@@ -111,6 +111,7 @@ test_files = [ \
     ("genbank",False, 'GenBank/dbsource_wrap.gb', 1),
     ("genbank",False, 'GenBank/NC_005816.gb', 1), #See also AE017046.embl
     ("genbank",False, 'GenBank/NC_000932.gb', 1),
+    ("genbank",False, 'GenBank/pBAD30.gb', 1), #Odd LOCUS line from Vector NTI
 # The next example is a truncated copy of gbvrl1.seq from
 # ftp://ftp.ncbi.nih.gov/genbank/gbvrl1.seq.gz
 # This includes an NCBI header, and the first three records:
@@ -142,7 +143,9 @@ test_files = [ \
 #Following PHD (PHRAP) sequencing files are also used in test_Phd.py
     ("phd", False, 'Phd/phd1', 3),
     ("phd", False, 'Phd/phd2', 1),
-#Following ACE assembly files are also used in test_Phd.py
+    ("phd", False, 'Phd/phd_solexa', 2),
+    ("phd", False, 'Phd/phd_454', 1),
+#Following ACE assembly files are also used in test_Ace.py
     ("ace", False, 'Ace/contig1.ace', 2),
     ("ace", False, 'Ace/consed_sample.ace', 1),
     ("ace", False, 'Ace/seq.cap.ace', 1),
@@ -161,10 +164,13 @@ test_files = [ \
     ("pir", True,  'NBRF/clustalw.pir', 2),
 #Following quality files are also used in the Bio.SeqIO.QualityIO doctests:
     ("fasta", True, 'Quality/example.fasta', 3),
-    ("qual",  False, 'Quality/example.qual',  3),
+    ("qual",  False,'Quality/example.qual',  3),
     ("fastq", True, 'Quality/example.fastq', 3),
     ("fastq", True, 'Quality/tricky.fastq', 4),
-    ("fastq-solexa", True, 'Quality/solexa.fastq', 1),
+    ("fastq", False,'Quality/sanger_faked.fastq', 1),
+    ("fastq", False,'Quality/sanger_93.fastq', 1),
+    ("fastq-illumina", False,'Quality/illumina_faked.fastq', 1),
+    ("fastq-solexa", False, 'Quality/solexa_faked.fastq', 1),
     ("fastq-solexa", True, 'Quality/solexa_example.fastq', 5),
     ]
 
