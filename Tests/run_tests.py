@@ -26,6 +26,7 @@ By default, all tests are run.
 DOCTEST_MODULES = ["Bio.Seq",
                    "Bio.SeqRecord",
                    "Bio.SeqIO",
+                   "Bio.SeqIO.PhdIO",
                    "Bio.SeqIO.QualityIO",
                    "Bio.SeqIO.AceIO",
                    "Bio.SeqUtils",
@@ -33,6 +34,7 @@ DOCTEST_MODULES = ["Bio.Seq",
                    "Bio.AlignIO",
                    "Bio.AlignIO.StockholmIO",
                    "Bio.Application",
+                   "Bio.Clustalw",
                    "Bio.KEGG.Compound",
                    "Bio.KEGG.Enzyme",
                    "Bio.Wise",
@@ -270,6 +272,19 @@ class TestRunner(unittest.TextTestRunner):
                 return True
             except Exception, msg:
                 # This happened during the import
+                sys.stderr.write("ERROR\n")
+                result.stream.write(result.separator1+"\n")
+                result.stream.write("ERROR: %s\n" % name)
+                result.stream.write(result.separator2+"\n")
+                result.stream.write(traceback.format_exc())
+                return False
+            except KeyboardInterrupt, err :
+                # Want to allow this, and abort the test
+                # (see below for special case)
+                raise err
+            except :
+                # This happens in Jython with java.lang.ClassFormatError:
+                # Invalid method Code length ...
                 sys.stderr.write("ERROR\n")
                 result.stream.write(result.separator1+"\n")
                 result.stream.write("ERROR: %s\n" % name)

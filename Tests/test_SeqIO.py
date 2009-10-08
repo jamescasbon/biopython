@@ -12,6 +12,16 @@ from Bio.Seq import Seq, UnknownSeq
 from StringIO import StringIO
 from Bio import Alphabet
 
+import warnings
+def send_warnings_to_stdout(message, category, filename, lineno,
+                                file=None, line=None):
+    #TODO - Have Biopython DataLossWarning?
+    if category in [UserWarning] :
+        print "%s - %s" % (category.__name__, message)
+warnings.resetwarnings()
+warnings.showwarning = send_warnings_to_stdout
+
+
 protein_alphas = [Alphabet.generic_protein]
 dna_alphas = [Alphabet.generic_dna]
 rna_alphas = [Alphabet.generic_rna]
@@ -32,6 +42,7 @@ for format in sorted(AlignIO._FormatToWriter) :
     if format not in test_write_read_alignment_formats :
         test_write_read_alignment_formats.append(format)
 test_write_read_alignment_formats.remove("gb") #an alias for genbank
+test_write_read_alignment_formats.remove("fastq-sanger") #an alias for fastq
 
 # test_files is a list of tuples containing:
 # - string:  file format
@@ -45,7 +56,7 @@ test_files = [ \
     ("clustal",True,  'Clustalw/opuntia.aln', 7),
     ("clustal",True,  'Clustalw/hedgehog.aln', 5),
     ("clustal",True,  'Clustalw/odd_consensus.aln', 2),
-#Following nucleic examples are also used in test_Fasta2.py
+#Following nucleic examples are also used in test_SeqIO_FastaIO.py
     ("fasta",  False, 'Nucleic/lupine.nu', 1),
     ("fasta",  False, 'Nucleic/elderberry.nu', 1),
     ("fasta",  False, 'Nucleic/phlox.nu', 1),
@@ -53,7 +64,7 @@ test_files = [ \
     ("fasta",  False, 'Nucleic/wisteria.nu', 1),
     ("fasta",  False, 'Nucleic/sweetpea.nu', 1),
     ("fasta",  False, 'Nucleic/lavender.nu', 1),
-#Following protein examples are also used in test_Fasta2.py
+#Following protein examples are also used in test_SeqIO_FastaIO.py
     ("fasta",  False, 'Amino/aster.pro', 1),
     ("fasta",  False, 'Amino/loveliesbleeding.pro', 1),
     ("fasta",  False, 'Amino/rose.pro', 1),
@@ -600,5 +611,11 @@ for (records, descr) in test_records :
 
         #Close now, after checking, so that it can be used at the console for debugging
         handle.close()
-        
+
+#Check writers can cope with no alignments
+for format in SeqIO._FormatToWriter :
+     handle = StringIO()
+     assert 0 == SeqIO.write([], handle, format), \
+            "Writing no records to %s format should work!" \
+            % t_format        
 print "Finished tested writing files"

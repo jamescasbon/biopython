@@ -727,6 +727,15 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.database_letters, 29652561)
         self.assertEqual(len(record.rounds), 3)
         self.assertEqual(len(record.rounds[0].new_seqs), 14)
+        #Rest of test broken up to avoid Jython JVM limitations
+        self._check_bt007_round0(record)
+        self._check_bt007_round1(record)
+        self._check_bt007_round2(record)
+        self._check_bt007_hsps(record)
+        self._check_bt007_hsps_details(record)
+        self._check_bt007_footer(record)
+
+    def _check_bt007_round0(self, record) :
         self.assertEqual(record.rounds[0].new_seqs[0].title, "gi|126343|sp|P17216|LIVK_SALTY LEUCINE-SPECIFIC BINDING PROTEIN...")
         self.assertEqual(record.rounds[0].new_seqs[0].score, 743)
         self.assertAlmostEqual(record.rounds[0].new_seqs[0].e, 0.0)
@@ -798,6 +807,8 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.rounds[0].alignments[12].length, 542)
         self.assertEqual(record.rounds[0].alignments[13].title, ">gi|1351310|sp|P43496|TRXB_PENCH THIOREDOXIN REDUCTASE")
         self.assertEqual(record.rounds[0].alignments[13].length, 334)
+
+    def _check_bt007_round1(self, record) :
         self.assertEqual(len(record.rounds[1].new_seqs), 18)
         self.assertEqual(record.rounds[1].new_seqs[0].title, "gi|113709|sp|P27017|AMIC_PSEAE ALIPHATIC AMIDASE EXPRESSION-REG...")
         self.assertEqual(record.rounds[1].new_seqs[0].score, 49)
@@ -901,6 +912,8 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.rounds[1].alignments[22].title, ">gi|1175674|sp|P45116|YCIH_HAEIN HYPOTHETICAL PROTEIN HI1225")
         self.assertEqual(record.rounds[1].alignments[22].length, 106)
         self.assertEqual(record.rounds[1].alignments[23].title, ">gi|3025270|sp|P77269|YPHF_ECOLI ABC TRANSPORTER PERIPLASMIC BINDING PROTEIN YPHF PRECURSOR")
+
+    def _check_bt007_round2(self, record) :
         self.assertEqual(record.rounds[1].alignments[23].length, 327)
         self.assertEqual(len(record.rounds[2].new_seqs), 16)
         self.assertEqual(record.rounds[2].new_seqs[0].title, "gi|3024134|sp|O15303|MGR6_HUMAN METABOTROPIC GLUTAMATE RECEPTOR...")
@@ -998,6 +1011,8 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.rounds[2].alignments[21].length, 725)
         self.assertEqual(record.rounds[2].alignments[22].title, ">gi|127971|sp||NCPR_SALTR_1 [Segment 1 of 3] NADPH-CYTOCHROME P450 REDUCTASE (CPR)")
         self.assertEqual(record.rounds[2].alignments[22].length, 426)
+
+    def _check_bt007_hsps(self, record) :
         self.assertEqual(record.rounds[0].alignments[0].hsps[0].score, 1897)
         self.assertAlmostEqual(record.rounds[0].alignments[0].hsps[0].bits, 743)
         self.assertAlmostEqual(record.rounds[0].alignments[0].hsps[0].expect, 0.0)
@@ -1414,6 +1429,8 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.rounds[2].alignments[22].hsps[0].identities, (28, 146))
         self.assertEqual(record.rounds[2].alignments[22].hsps[0].positives, (53, 146))
         self.assertEqual(record.rounds[2].alignments[22].hsps[0].gaps, (8, 146))
+
+    def _check_bt007_hsps_details(self, record) :
         self.assertEqual(record.rounds[0].alignments[0].hsps[0].query, "MKRKAKTIIAGIVALAVSQGAMADDIKVAIVGAMSGPVAQWGDMEFNGARQAIKDINAKGGIKGDKLVGVEYDDACDPKQAVAVANKIVNDGIQYVIGHLCSSSTQPASDIYEDEGILMISPGATNPELTQRGYQYIMRTAGLDSSQGPTAAKYILETVKPQRIAIIHDKQQYGEGLARSVQDGLKQGNANIVFFDGITAGEKDFSALIARLQKENIDFVYYGGYYPEMGQIVRQARANGLKTQFMGPEGVGNASLSNIAGGAAEGMLVTMPKRYDQDPANKAIVEALKADKKDPSGPYVWITYAAVQSLATAMTRSASHRPLDLVKDLKANGADTVIGPLKWDEKGDLKGFEFGVFQWHADGSSTVAK")
         self.assertEqual(record.rounds[0].alignments[0].hsps[0].match, "MKRKAKTIIAGIVALAVSQGAMADDIKVAIVGAMSGPVAQWGDMEFNGARQAIKDINAKGGIKGDKLVGVEYDDACDPKQAVAVANKIVNDGIQYVIGHLCSSSTQPASDIYEDEGILMISPGATNPELTQRGYQYIMRTAGLDSSQGPTAAKYILETVKPQRIAIIHDKQQYGEGLARSVQDGLKQGNANIVFFDGITAGEKDFSALIARLQKENIDFVYYGGYYPEMGQIVRQARANGLKTQFMGPEGVGNASLSNIAGGAAEGMLVTMPKRYDQDPANKAIVEALKADKKDPSGPYVWITYAAVQSLATAMTRSASHRPLDLVKDLKANGADTVIGPLKWDEKGDLKGFEFGVFQWHADGSSTVAK")
         self.assertEqual(record.rounds[0].alignments[0].hsps[0].sbjct, "MKRKAKTIIAGIVALAVSQGAMADDIKVAIVGAMSGPVAQWGDMEFNGARQAIKDINAKGGIKGDKLVGVEYDDACDPKQAVAVANKIVNDGIQYVIGHLCSSSTQPASDIYEDEGILMISPGATNPELTQRGYQYIMRTAGLDSSQGPTAAKYILETVKPQRIAIIHDKQQYGEGLARSVQDGLKQGNANIVFFDGITAGEKDFSALIARLQKENIDFVYYGGYYPEMGQIVRQARANGLKTQFMGPEGVGNASLSNIAGGAAEGMLVTMPKRYDQDPANKAIVEALKADKKDPSGPYVWITYAAVQSLATAMTRSASHRPLDLVKDLKANGADTVIGPLKWDEKGDLKGFEFGVFQWHADGSSTVAK")
@@ -1841,6 +1858,8 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.rounds[2].alignments[22].hsps[0].query_end, 349)
         self.assertEqual(record.rounds[2].alignments[22].hsps[0].sbjct_start, 15)
         self.assertEqual(record.rounds[2].alignments[22].hsps[0].sbjct_end, 157)
+
+    def _check_bt007_footer(self, record) :
         self.assertEqual(record.database_name, ['data/swissprot'])
         self.assertEqual(record.num_letters_in_database, [29652561])
         self.assertEqual(record.num_sequences_in_database, [82258])
@@ -1905,6 +1924,14 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.database_letters, 29652561)
         self.assertEqual(len(record.rounds), 2)
         self.assertEqual(len(record.rounds[0].new_seqs), 30)
+        #Rest of test broken up to avoid Jython JVM limitations
+        self._check_bt009_round0(record)
+        self._check_bt009_round1(record)
+        self._check_bt009_hsps(record)
+        self._check_bt009_hsps_details(record)
+        self._check_bt009_footer(record)
+
+    def _check_bt009_round0(self, record) :
         self.assertEqual(record.rounds[0].new_seqs[0].title, "gi|399896|sp|Q02134|HIS7_LACLA IMIDAZOLEGLYCEROL-PHOSPHATE DEHY...")
         self.assertEqual(record.rounds[0].new_seqs[0].score, 409)
         self.assertAlmostEqual(record.rounds[0].new_seqs[0].e, 1.e-114)
@@ -2056,6 +2083,8 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.rounds[0].alignments[28].length, 956)
         self.assertEqual(record.rounds[0].alignments[29].title, ">gi|1174406|sp|P36126|SP14_YEAST PHOSPHOLIPASE D1 (PLD 1) (CHOLINE PHOSPHATASE 1) (PHOSPHATIDYLCHOLINE-HYDROLYZING PHOSPHOLIPASE D1) (MEIOSIS-SPECIFIC SPORULATION PROTEIN SPO14)")
         self.assertEqual(record.rounds[0].alignments[29].length, 1380)
+
+    def _check_bt009_round1(self, record) :
         self.assertEqual(len(record.rounds[1].new_seqs), 0)
         self.assertEqual(len(record.rounds[1].alignments), 24)
         self.assertEqual(record.rounds[1].alignments[0].title, ">gi|2495230|sp|Q43072|HIS7_PEA IMIDAZOLEGLYCEROL-PHOSPHATE DEHYDRATASE (IGPD)")
@@ -2107,6 +2136,8 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.rounds[1].alignments[23].title, ">gi|3334215|sp|O33773|HIS7_SULSO PROBABLE IMIDAZOLEGLYCEROL-PHOSPHATE DEHYDRATASE (IGPD)")
         self.assertEqual(record.rounds[1].alignments[23].length, 193)
         self.assertEqual(record.rounds[0].alignments[0].hsps[0].score, 1040)
+
+    def _check_bt009_hsps(self, record) :
         self.assertAlmostEqual(record.rounds[0].alignments[0].hsps[0].bits, 409)
         self.assertAlmostEqual(record.rounds[0].alignments[0].hsps[0].expect, 1e-114)
         self.assertEqual(len(record.rounds[0].alignments[0].hsps), 1)
@@ -2481,6 +2512,8 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.rounds[1].alignments[23].hsps[0].identities, (83, 200))
         self.assertEqual(record.rounds[1].alignments[23].hsps[0].positives, (124, 200))
         self.assertEqual(record.rounds[1].alignments[23].hsps[0].gaps, (7, 200))
+
+    def _check_bt009_hsps_details(self, record) :
         self.assertEqual(record.rounds[0].alignments[0].hsps[0].query, "MTRISHITRNTKETQIELSINLDGTGQADISTGIGFLDHMLTLLTFHSDFDLKIIGHGDHETVGMDPHHLIEDVAIALGKCISEDLGNKLGIRRYGSFTIPMDEALVTCDLDISGRPYLVFHADLSGNQKLGGYDTEMTEEFFRALAFNAGITLHLNEHYGQNTHHIIEGMFKSTARALKQAVSIDESKVGEIPSSKGVL")
         self.assertEqual(record.rounds[0].alignments[0].hsps[0].match, "MTRISHITRNTKETQIELSINLDGTGQADISTGIGFLDHMLTLLTFHSDFDLKIIGHGDHETVGMDPHHLIEDVAIALGKCISEDLGNKLGIRRYGSFTIPMDEALVTCDLDISGRPYLVFHADLSGNQKLGGYDTEMTEEFFRALAFNAGITLHLNEHYGQNTHHIIEGMFKSTARALKQAVSIDESKVGEIPSSKGVL")
         self.assertEqual(record.rounds[0].alignments[0].hsps[0].sbjct, "MTRISHITRNTKETQIELSINLDGTGQADISTGIGFLDHMLTLLTFHSDFDLKIIGHGDHETVGMDPHHLIEDVAIALGKCISEDLGNKLGIRRYGSFTIPMDEALVTCDLDISGRPYLVFHADLSGNQKLGGYDTEMTEEFFRALAFNAGITLHLNEHYGQNTHHIIEGMFKSTARALKQAVSIDESKVGEIPSSKGVL")
@@ -2859,6 +2892,8 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.rounds[1].alignments[23].hsps[0].query_end, 200)
         self.assertEqual(record.rounds[1].alignments[23].hsps[0].sbjct_start, 1)
         self.assertEqual(record.rounds[1].alignments[23].hsps[0].sbjct_end, 193)
+
+    def _check_bt009_footer(self, record) :
         self.assertEqual(record.database_name, ['data/swissprot'])
         self.assertEqual(record.num_letters_in_database, [29652561])
         self.assertEqual(record.num_sequences_in_database, [82258])
@@ -5649,6 +5684,14 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.database_letters, 29652561)
         self.assertEqual(len(record.rounds), 2)
         self.assertEqual(len(record.rounds[0].new_seqs), 30)
+        #Rest of test broken up to avoid Jython JVM limitations
+        self._check_bt047_round0(record)
+        self._check_bt047_round1(record)
+        self._check_bt047_hsps(record)
+        self._check_bt047_hsps_details(record)
+        self._check_bt047_footer(record)
+
+    def _check_bt047_round0(self, record):
         self.assertEqual(record.rounds[0].new_seqs[0].title, "gi|399896|sp|Q02134|HIS7_LACLA IMIDAZOLEGLYCEROL-PHOSPHATE DEHY...")
         self.assertEqual(record.rounds[0].new_seqs[0].score, 409)
         self.assertAlmostEqual(record.rounds[0].new_seqs[0].e, 1e-114)
@@ -5800,6 +5843,8 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.rounds[0].alignments[28].length, 1380)
         self.assertEqual(record.rounds[0].alignments[29].title, ">gi|3287848|sp|Q16099|GLK4_HUMAN GLUTAMATE RECEPTOR, IONOTROPIC KAINATE 4 PRECURSOR (GLUTAMATE RECEPTOR KA-1) (KA1) (EXCITATORY AMINO ACID RECEPTOR 1) (EAA1)")
         self.assertEqual(record.rounds[0].alignments[29].length, 956)
+
+    def _check_bt047_round1(self, record):
         self.assertEqual(len(record.rounds[1].new_seqs), 2)
         self.assertEqual(record.rounds[1].new_seqs[0].title, "gi|2833252|sp|Q14571|IP3S_HUMAN INOSITOL 1,4,5-TRISPHOSPHATE-BI...")
         self.assertEqual(record.rounds[1].new_seqs[0].score, 30)
@@ -5860,6 +5905,8 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.rounds[1].alignments[24].length, 2701)
         self.assertEqual(record.rounds[1].alignments[25].title, ">gi|266389|sp|P29995|IP3S_RAT INOSITOL 1,4,5-TRISPHOSPHATE-BINDING PROTEIN TYPE 2 RECEPTOR (TYPE 2 INSP3 RECEPTOR) (TYPE 2 INOSITOL 1,4,5-TRISPHOSPHATE RECEPTOR)")
         self.assertEqual(record.rounds[1].alignments[25].length, 2701)
+
+    def _check_bt047_hsps(self, record):
         self.assertEqual(record.rounds[0].alignments[0].hsps[0].score, 1040)
         self.assertAlmostEqual(record.rounds[0].alignments[0].hsps[0].bits, 409)
         self.assertAlmostEqual(record.rounds[0].alignments[0].hsps[0].expect, 1e-114)
@@ -6083,6 +6130,8 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertAlmostEqual(record.rounds[1].alignments[25].hsps[0].bits, 28.8)
         self.assertAlmostEqual(record.rounds[1].alignments[25].hsps[0].expect, 8.2)
         self.assertEqual(len(record.rounds[1].alignments[25].hsps), 1)
+        
+    def _check_bt047_hsps_details(self, record):
         self.assertEqual(record.rounds[0].alignments[0].hsps[0].identities, (200, 200))
         self.assertEqual(record.rounds[0].alignments[0].hsps[0].positives, (200, 200))
         self.assertEqual(record.rounds[0].alignments[1].hsps[0].identities, (99, 198))
@@ -6641,6 +6690,8 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.rounds[1].alignments[25].hsps[0].query_end, 141)
         self.assertEqual(record.rounds[1].alignments[25].hsps[0].sbjct_start, 1540)
         self.assertEqual(record.rounds[1].alignments[25].hsps[0].sbjct_end, 1659)
+
+    def _check_bt047_footer(self, record):
         self.assertEqual(record.database_name, ['data/swissprot'])
         self.assertEqual(record.num_letters_in_database, [29652561])
         self.assertEqual(record.num_sequences_in_database, [82258])
@@ -9956,6 +10007,7 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.blast_cutoff[0], 63)
         self.assertAlmostEqual(record.blast_cutoff[1], 29.0)
 
+
     def test_bt060(self):
         "Test parsing BLASTP 2.0.12 output (bt060)"
 
@@ -9972,6 +10024,17 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.database_sequences, 88201)
         self.assertEqual(record.database_letters, 31957340)
         self.assertEqual(len(record.rounds), 5)
+        #Rest of test broken up to avoid Jython JVM limitations
+        self._check_bt060_round0(record)
+        self._check_bt060_round1(record)
+        self._check_bt060_round2(record)
+        self._check_bt060_round4(record)
+        self._check_bt060_hsps(record)
+        self._check_bt060_hsps_counts(record)
+        self._check_bt060_hsps_details(record)
+        self._check_bt060_footer(record)
+
+    def _check_bt060_round0(self, record):
         self.assertEqual(len(record.rounds[0].new_seqs), 27)
         self.assertEqual(record.rounds[0].new_seqs[0].title, "100K_RAT Q62671 rattus norvegicus (rat). 100 kda protein (ec...")
         self.assertEqual(record.rounds[0].new_seqs[0].score, 1516)
@@ -10109,6 +10172,8 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.rounds[0].alignments[25].length, 211)
         self.assertEqual(record.rounds[0].alignments[26].title, ">CC24_YEAST P11433 saccharomyces cerevisiae (baker's yeast). cell division control protein 24 (calcium regulatory protein). 7/1999")
         self.assertEqual(record.rounds[0].alignments[26].length, 854)
+
+    def _check_bt060_round1(self, record):
         self.assertEqual(len(record.rounds[1].new_seqs), 9)
         self.assertEqual(record.rounds[1].new_seqs[0].title, "PABP_DROME P21187 drosophila melanogaster (fruit fly). polya...")
         self.assertEqual(record.rounds[1].new_seqs[0].score, 67)
@@ -10190,6 +10255,8 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.rounds[1].alignments[24].length, 863)
         self.assertEqual(record.rounds[1].alignments[25].title, ">SYQ_YEAST P13188 saccharomyces cerevisiae (baker's yeast). glutaminyl-trna synthetase (ec 6.1.1.18) (glutamine--trna ligase) (glnrs). 11/1997")
         self.assertEqual(record.rounds[1].alignments[25].length, 809)
+
+    def _check_bt060_round2(self, record):
         self.assertEqual(len(record.rounds[2].new_seqs), 6)
         self.assertEqual(record.rounds[2].new_seqs[0].title, "PAB2_ARATH P42731 arabidopsis thaliana (mouse-ear cress). po...")
         self.assertEqual(record.rounds[2].new_seqs[0].score, 48)
@@ -10258,6 +10325,8 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.rounds[2].alignments[22].length, 892)
         self.assertEqual(record.rounds[2].alignments[23].title, ">RNR_AQUAE O67834 aquifex aeolicus. ribonuclease r (ec 3.1.-.-) (rnase r) (vacb protein homolog). 5/2000")
         self.assertEqual(record.rounds[2].alignments[23].length, 705)
+
+    def _check_bt060_round3(self, record):
         self.assertEqual(len(record.rounds[3].new_seqs), 4)
         self.assertEqual(record.rounds[3].new_seqs[0].title, "PAB5_ARATH Q05196 arabidopsis thaliana (mouse-ear cress). po...")
         self.assertEqual(record.rounds[3].new_seqs[0].score, 51)
@@ -10320,6 +10389,8 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.rounds[3].alignments[22].length, 705)
         self.assertEqual(record.rounds[3].alignments[23].title, ">NIRA_EMENI P28348 emericella nidulans (aspergillus nidulans). nitrogen assimilation transcription factor nira. 4/1993")
         self.assertEqual(record.rounds[3].alignments[23].length, 892)
+
+    def _check_bt060_round4(self, record):
         self.assertEqual(len(record.rounds[4].new_seqs), 2)
         self.assertEqual(record.rounds[4].new_seqs[0].title, "RNR_AQUAE O67834 aquifex aeolicus. ribonuclease r (ec 3.1.-....")
         self.assertEqual(record.rounds[4].new_seqs[0].score, 33)
@@ -10376,6 +10447,8 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.rounds[4].alignments[22].length, 705)
         self.assertEqual(record.rounds[4].alignments[23].title, ">NIRA_EMENI P28348 emericella nidulans (aspergillus nidulans). nitrogen assimilation transcription factor nira. 4/1993")
         self.assertEqual(record.rounds[4].alignments[23].length, 892)
+
+    def _check_bt060_hsps(self, record):
         self.assertEqual(record.rounds[0].alignments[0].hsps[0].score, 3882)
         self.assertAlmostEqual(record.rounds[0].alignments[0].hsps[0].bits, 1516)
         self.assertAlmostEqual(record.rounds[0].alignments[0].hsps[0].expect, 0.0)
@@ -10887,6 +10960,8 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertAlmostEqual(record.rounds[4].alignments[23].hsps[0].bits, 32.9)
         self.assertAlmostEqual(record.rounds[4].alignments[23].hsps[0].expect, 2.9)
         self.assertEqual(len(record.rounds[4].alignments[23].hsps), 1)
+
+    def _check_bt060_hsps_counts(self, record):
         self.assertEqual(record.rounds[0].alignments[0].hsps[0].identities, (765, 889))
         self.assertEqual(record.rounds[0].alignments[0].hsps[0].positives, (765, 889))
         self.assertEqual(record.rounds[0].alignments[1].hsps[0].identities, (281, 634))
@@ -11236,6 +11311,8 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.rounds[4].alignments[22].hsps[0].gaps, (13, 92))
         self.assertEqual(record.rounds[4].alignments[23].hsps[0].identities, (22, 95))
         self.assertEqual(record.rounds[4].alignments[23].hsps[0].positives, (35, 95))
+
+    def _check_bt060_hsps_details(self, record):
         self.assertEqual(record.rounds[0].alignments[0].hsps[0].query, "MMSARGDFLNYALSLMRSHNDEHSDVLPVLDVCSLKHVAYVFQALIYWIKAMNQQTTLDTPQXXXXXXXXXXXXGIXXXXXXXXXXXXTSQSATLNDKDDESLPAETGQNHPFFRRSDSMTFLGCIPPNPFEVPLAEAIPLADQPHLLQPNARKEDLFGRPSQGLYSSSAGSGKCLVEVTMDRNCLEVLPTKMSYAANLKNVMNMQNRQKKAGEDQSMLAEEADSSKPGPSAHDVAAQLKSSLLAEIGLTESEGPPLTSFRPQCSFMGMVISHDMLLGRWRLSLELFGRVFMEDVGAEPGSILTELGGFEVKESKFRREMEKLRNQQSRDLSLEVDRDRDLLIQQTMRQLNNHFGRRCATTPMAVHRVKVTFKDEPGEGSGVARSFYTAIAQAFLSNEKLPNLDCIQNANKGTHTSLMQXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXQLSIDTRPFRPASEGNPSDDPDPLPAHRQALGERLYPRVQAMQPAFASKITGMXXXXXXXXXXXXXXXXXXXRARVEEAMELIVAHGRENGAXXXXXXXXXXXXEKVQENRKRHGSSRSVVXXXXXXXXXXXXNAPLFYQPGKRGFYTPRPGKNTEARLNCFRNIGRILGLCLLQNELCPITLNRHVIKVLLGRKVNWHDFAFFDPVMYESLRQLILASQSSDADAVFSAMDLAFAVDLCKEEGGGQVELIPNGVNIPVTPQNVYEYVRKYAEHRMLVVAEQPLHAMRKGLLDVLPKNSLEDLTAEDFRLLVNGCGEVNVQMLISFTSFNDESGENAEKLLQFKRWFWSIVERMSMTERQDLVYFWTSSPSLPASEEGFQPMPSITIRPPDDQHLPTANTCISRLYVPXXXXXXXXXXXXXXXXXXXNFGFV")
         self.assertEqual(record.rounds[0].alignments[0].hsps[0].match, "MMSARGDFLNYALSLMRSHNDEHSDVLPVLDVCSLKHVAYVFQALIYWIKAMNQQTTLDTPQ            GI            TSQSATLNDKDDESLPAETGQNHPFFRRSDSMTFLGCIPPNPFEVPLAEAIPLADQPHLLQPNARKEDLFGRPSQGLYSSSAGSGKCLVEVTMDRNCLEVLPTKMSYAANLKNVMNMQNRQKKAGEDQSMLAEEADSSKPGPSAHDVAAQLKSSLLAEIGLTESEGPPLTSFRPQCSFMGMVISHDMLLGRWRLSLELFGRVFMEDVGAEPGSILTELGGFEVKESKFRREMEKLRNQQSRDLSLEVDRDRDLLIQQTMRQLNNHFGRRCATTPMAVHRVKVTFKDEPGEGSGVARSFYTAIAQAFLSNEKLPNLDCIQNANKGTHTSLMQ                                      QLSIDTRPFRPASEGNPSDDPDPLPAHRQALGERLYPRVQAMQPAFASKITGM                   RARVEEAMELIVAHGRENGA            EKVQENRKRHGSSRSVV            NAPLFYQPGKRGFYTPRPGKNTEARLNCFRNIGRILGLCLLQNELCPITLNRHVIKVLLGRKVNWHDFAFFDPVMYESLRQLILASQSSDADAVFSAMDLAFAVDLCKEEGGGQVELIPNGVNIPVTPQNVYEYVRKYAEHRMLVVAEQPLHAMRKGLLDVLPKNSLEDLTAEDFRLLVNGCGEVNVQMLISFTSFNDESGENAEKLLQFKRWFWSIVERMSMTERQDLVYFWTSSPSLPASEEGFQPMPSITIRPPDDQHLPTANTCISRLYVP                   NFGFV")
         self.assertEqual(record.rounds[0].alignments[0].hsps[0].sbjct, "MMSARGDFLNYALSLMRSHNDEHSDVLPVLDVCSLKHVAYVFQALIYWIKAMNQQTTLDTPQLERKRTRELLELGIDNEDSEHENDDDTSQSATLNDKDDESLPAETGQNHPFFRRSDSMTFLGCIPPNPFEVPLAEAIPLADQPHLLQPNARKEDLFGRPSQGLYSSSAGSGKCLVEVTMDRNCLEVLPTKMSYAANLKNVMNMQNRQKKAGEDQSMLAEEADSSKPGPSAHDVAAQLKSSLLAEIGLTESEGPPLTSFRPQCSFMGMVISHDMLLGRWRLSLELFGRVFMEDVGAEPGSILTELGGFEVKESKFRREMEKLRNQQSRDLSLEVDRDRDLLIQQTMRQLNNHFGRRCATTPMAVHRVKVTFKDEPGEGSGVARSFYTAIAQAFLSNEKLPNLDCIQNANKGTHTSLMQRLRNRGERDREREREREMRRSSGLRAGSRRDRDRDFRRQLSIDTRPFRPASEGNPSDDPDPLPAHRQALGERLYPRVQAMQPAFASKITGMLLELSPAQLLLLLASEDSLRARVEEAMELIVAHGRENGADSILDLGLLDSSEKVQENRKRHGSSRSVVDMDLDDTDDGDDNAPLFYQPGKRGFYTPRPGKNTEARLNCFRNIGRILGLCLLQNELCPITLNRHVIKVLLGRKVNWHDFAFFDPVMYESLRQLILASQSSDADAVFSAMDLAFAVDLCKEEGGGQVELIPNGVNIPVTPQNVYEYVRKYAEHRMLVVAEQPLHAMRKGLLDVLPKNSLEDLTAEDFRLLVNGCGEVNVQMLISFTSFNDESGENAEKLLQFKRWFWSIVERMSMTERQDLVYFWTSSPSLPASEEGFQPMPSITIRPPDDQHLPTANTCISRLYVPLYSSKQILKQKLLLAIKTKNFGFV")
@@ -12146,6 +12223,8 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(record.rounds[4].alignments[23].hsps[0].query_end, 313)
         self.assertEqual(record.rounds[4].alignments[23].hsps[0].sbjct_start, 702)
         self.assertEqual(record.rounds[4].alignments[23].hsps[0].sbjct_end, 796)
+
+    def _check_bt060_footer(self, record):
         self.assertEqual(record.database_name, ['/dbase/swissprot/main/release/sp', '/dbase/swissprot/main/update/spu'])
         self.assertEqual(record.posted_date, [('Jun 21, 2000 12:39 PM',), ('Nov 3, 1999  8:09 PM',)])
         self.assertEqual(record.num_letters_in_database, [31411157, 546183])
@@ -12664,6 +12743,7 @@ class TestNCBITextParser(unittest.TestCase):
         self.assertEqual(len(record.blast_cutoff), 2)
         self.assertEqual(record.blast_cutoff[0], 15)
         self.assertAlmostEqual(record.blast_cutoff[1], 30.2)
+
 
     def test_bt063(self):
         "Test parsing BLASTP 2.0.14 output (bt063)"
