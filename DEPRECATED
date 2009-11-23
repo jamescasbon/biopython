@@ -7,6 +7,18 @@ Python 2.3
 No longer supported as of Release 1.51, having triggered a warning with
 Release 1.50, with a mention in the release notes for Release 1.49.
 
+Bio.Blast.NCBIStandalone.blastall, blastpgp and rpsblast
+========================================================
+These command line tools were declared obsolete in Release 1.53, please use
+the BLAST+ wrappers in Bio.Blast.Applications and the subprocess module instead.
+
+Bio.Blast.Applications
+======================
+NCBI "legacy" BLAST tool wrappers FastacmdCommandline, BlastallCommandline,
+BlastpgpCommandline and RpsBlastCommandline were declared obsolete in Release
+1.53, having been replace with wrappers for the new NCBI BLAST+ tools (e.g.
+NcbiblastpCommandline and NcbipsiblastCommandline).
+
 Bio.Clustalw
 ============
 Declared obsolete in Release 1.52, having been replaced with Bio.AlignIO for
@@ -21,7 +33,8 @@ in Release 1.51, please use psycopg2 instead.
 
 Bio.Application.generic_run and ApplicationResult
 =================================================
-Declared obsolete in Release 1.51, please use Python subprocess module instead.
+Declared obsolete in Release 1.51, and deprecated in Release 1.53.
+Please use the Python subprocess module instead.
 
 Bio.Entrez.efetch and rettype="genbank"
 =======================================
@@ -32,7 +45,7 @@ automatically, but issues a deprecation warning.
 
 Bio.Entrez.query function
 =========================
-Deprecated in Release 1.47, removed in 1.52.
+Deprecated in Release 1.47, removed in Release 1.52.
 
 Bio.SwissProt.SProt
 ===================
@@ -84,7 +97,7 @@ Bio.mathfns, Bio.stringfns and Bio.listfns (and their C code variants)
 ==========================================
 Declared obsolete in Release 1.49.
 Bio.mathfns and Bio.stringfns were deprecated in Release 1.50
-(the deprecation of Bio.listfns is still pending)
+Bio.listfns was deprecated in Release 1.53
 
 Bio.distance (and Bio.cdistance)
 ================================
@@ -144,8 +157,8 @@ Please use Bio.Entrez instead.
 
 Bio.PubMed
 ==========
-Declared obsolete in Release 1.48, deprecated in Release 1.49.
-Please use Bio.Entrez instead.
+Declared obsolete in Release 1.48, deprecated in Release 1.49, and
+removed in Release 1.53. Please use Bio.Entrez instead.
 
 Bio.EUtils
 ==========
@@ -225,7 +238,8 @@ Deprecated as of Release 1.45, removed in Release 1.48
 Bio.WWW
 =======
 The modules under Bio.WWW were deprecated in Release 1.45, and removed in
-Release 1.48.  The remaining stub Bio.WWW was deprecated in Release 1.48.
+Release 1.48.  The remaining stub Bio.WWW was deprecated in Release 1.48,
+and removed in Release 1.53.
 
 The functionality in Bio.WWW.SCOP, Bio.WWW.InterPro and Bio.WWW.ExPASy
 is now available from Bio.SCOP, Bio.InterPro and Bio.ExPASy instead.
